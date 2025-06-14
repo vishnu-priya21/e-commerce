@@ -1,0 +1,50 @@
+<div class="dashboard-container">
+    <div class="user-menu-wrapper">
+  <div class="user-icon" (click)="toggleDropdown()">
+    👤
+  </div>
+  <div class="user-dropdown" *ngIf="showDropdown">
+    <p class="user-name">Welcome</p>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</div>
+  <h2 class="dashboard-title">User Dashboard</h2>
+  <div class="dashboard-grid">
+    <a class="dashboard-card" (click)="openProductModal()">🛒 View Products</a>
+    <a routerLink="/cart" class="dashboard-card">🧺 My Cart</a>
+<a routerLink="/orders" class="dashboard-card">📦 My Orders</a>
+  </div>
+</div>
+<div class="modal-backdrop" *ngIf="showProductModal" (click)="closeProductModal()"></div>
+<div class="modal" *ngIf="showProductModal">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>🛍️ Products</h3>
+    <table class="product-table">
+  <thead>
+    <tr>
+      <th>Product ID</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Add to Cart</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.productId }}</td>
+      <td>{{ product.productName }}</td>
+      <td>₹{{ product.productPrice }}</td>
+      <td>
+        <input type="number" [(ngModel)]="product.quantity" min="1" />
+      </td>
+      <td>
+        <button class="plain-plus" (click)="addToCart(product)">➕</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+    <button class="close-btn" (click)="closeProductModal()">Close</button>
+  </div>
+</div>

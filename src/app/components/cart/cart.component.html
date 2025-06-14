@@ -1,0 +1,106 @@
+<nav class="navbar">
+  <div class="nav-title">🛍️ Cart</div>
+  <div class="nav-links">
+  <button (click)="goToDashboard()">← Back to Dashboard</button>
+
+    <div class="user-icon" (click)="toggleDropdown()">👤</div>
+    <div class="user-dropdown" *ngIf="showDropdown">
+      <p class="user-name">Welcome</p>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+<div class="cart-wrapper">
+  <h2>🛒 My Cart</h2>
+
+  <!-- Add Section -->
+  <div class="add-section">
+    <input type="number" [(ngModel)]="productIdInput" placeholder="Product ID" />
+    <input type="number" [(ngModel)]="quantityInput" placeholder="Quantity" />
+    <button class="primary-btn" (click)="addItem()">Add to Cart</button>
+  </div>
+
+  <!-- Cart Items -->
+  <div *ngIf="cart">
+    <table>
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart.cartItems">
+          <td>{{ item.productId }}</td>
+          <td>{{ item.productName || 'Product' }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹{{ item.price }}</td>
+          <td><button (click)="removeItem(item.productId)">❌</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total"><strong>Total Price:</strong> ₹{{ cart.totalPrice }}</div>
+
+    <!-- Buttons in row -->
+    <div class="cart-actions">
+      <button class="primary-btn" (click)="clearCart()">🗑️ Clear Cart</button>
+      <button class="primary-btn" (click)="handleProceedToBuy()">💳 Proceed to Buy</button>
+    </div>
+  </div>
+
+  <div *ngIf="!cart">
+    <p>No cart found for this user.</p>
+  </div>
+
+  <!-- Order Confirmation Section -->
+  <div *ngIf="showOrderSection" class="expand-section order-summary">
+  <div class="order-header">
+    <h3>🧾 Order Successfully Created</h3>
+    <p class="subtext">Your order has been recorded. Please proceed to payment to complete your purchase.</p>
+  </div>
+
+  <div class="order-details">
+    <p><strong>📦 Order ID:</strong> {{ createdOrder?.orderId }}</p>
+    <p><strong>📌 Status:</strong> <span [ngClass]="getStatusClass(createdOrder?.status)">
+      {{ createdOrder?.status }}
+    </span></p>
+    <p><strong>💰 Total Amount:</strong> ₹{{ createdOrder?.totalAmount }}</p>
+  </div>
+
+  <div class="text-right">
+    <button class="primary-btn" (click)="togglePayment()">➡️ Proceed to Payment</button>
+  </div>
+</div>
+
+  <!-- Payment Form Section -->
+  <!-- Payment Form Section -->
+<div *ngIf="showPaymentSection" class="expand-section payment-form">
+  <h3>💸 Payment</h3>
+  <div class="payment-grid">
+    <div class="form-group">
+      <label for="orderId">Order ID</label>
+      <input [(ngModel)]="paymentRequest.orderId" type="number" readonly />
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount</label>
+      <input [(ngModel)]="paymentRequest.amount" type="number" readonly />
+    </div>
+    <div class="form-group">
+      <label for="paymentType">Payment Type</label>
+      <select [(ngModel)]="paymentRequest.paymentType">
+        <option value="CREDIT_CARD">Credit Card</option>
+        <option value="DEBIT_CARD">Debit Card</option>
+        <option value="UPI">UPI</option>
+      </select>
+    </div>
+  </div>
+  <div class="text-right">
+    <button class="primary-btn" (click)="processPayment()">✔️ Pay Now</button>
+  </div>
+</div>
+
+</div>

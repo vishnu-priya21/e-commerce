@@ -1,0 +1,57 @@
+  <nav class="navbar">
+  <div class="nav-title">🛍️ Payment</div>
+  <div class="nav-links">
+  <button (click)="goToDashboard()">← Back to Dashboard</button>
+
+    <div class="user-icon" (click)="toggleDropdown()">👤</div>
+    <div class="user-dropdown" *ngIf="showDropdown">
+      <p class="user-name">Welcome</p>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+<div class="payment-wrapper">
+
+  <h2>💳 Payment Dashboard</h2>
+
+  <div class="card-row">
+
+  <div class="card filter-card">
+    <h3>🔍 Filter Payments</h3>
+    <div class="filter-buttons">
+      <button (click)="fetchAllPayments()">All</button>
+      <button (click)="fetchByStatus('SUCCESS')">Success</button>
+      <button (click)="fetchByType('UPI')">UPI</button>
+      <button (click)="fetchByType('CREDIT_CARD')">Credit Card</button>
+    </div>
+  </div>
+</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div class="card" *ngIf="payments?.length">
+  <h3>📜 Payments</h3>
+  <ul class="payment-list">
+    <li *ngFor="let payment of payments" class="payment-item">
+      <div class="payment-entry">
+        <div><strong>🆔 ID:</strong> {{ payment.transactionId }}</div>
+        <div><strong>💰 Amount:</strong> ₹{{ payment.totalAmount }}</div>
+        <div><strong>💳 Type:</strong> {{ payment.paymentType }}</div>
+        <div><strong>📅 Time:</strong> {{ payment.paymentTime | date: 'short' }}</div>
+        <div>
+          <strong>📌 Status:</strong>
+          <span [ngClass]="{
+            'status-success': payment.status === 'SUCCESS',
+            'status-failed': payment.status === 'FAILED'
+          }">
+            {{ payment.status }}
+          </span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+  <div *ngIf="!payments?.length" class="no-data">No payments to display.</div>
+</div>

@@ -1,0 +1,43 @@
+
+<div class="navbar">
+  <div class="nav-title">🛒 Orders</div>
+  <div class="nav-links">
+    <button (click)="goToDashboard()">← Back to Admin Dashboard</button>
+   <div class="user-icon" (click)="toggleDropdown()">👤</div>
+    <div class="user-dropdown" *ngIf="showDropdown">
+      <p class="user-name">Welcome , Admin </p>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+    
+  </div>
+</div>
+<div class="orders-wrapper">
+  <div class="order-actions">
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div class="order-list card" *ngIf="orders.length">
+  <ul>
+    <li *ngFor="let order of orders" class="order-item">
+      <div class="order-info">
+        <div><strong>Order #{{ order.orderId }}</strong></div>
+        <div class="status">
+          <span class="status-label">Status:</span> 
+          <span [ngClass]="{
+              'status-success': order.status === 'PLACED',
+              'status-failed': order.status === 'CANCELLED',
+              'status-pending': order.status !== 'PLACED' && order.status !== 'CANCELLED'
+            }">
+            {{ order.status }}
+          </span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+  <div *ngIf="!orders.length" class="no-orders">
+    <p>No orders available.</p>
+  </div>
+</div>

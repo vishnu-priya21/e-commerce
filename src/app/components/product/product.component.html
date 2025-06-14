@@ -1,0 +1,122 @@
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="nav-title">🛍️ Product Dashboard</div>
+  <div class="nav-links">
+  <button (click)="goToDashboard()">← Back to Admin Dashboard</button>
+
+    <button (click)="toggleAllProductsModal()">📋 View All Products</button>
+    <div class="user-icon" (click)="toggleDropdown()">👤</div>
+    <div class="user-dropdown" *ngIf="showDropdown">
+      <p class="user-name">Welcome, Admin</p>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- View All Products Modal -->
+<div class="modal" *ngIf="showAllProductsModal">
+  <div class="modal-content">
+    <span class="close" (click)="toggleAllProductsModal()">&times;</span>
+    <h3>📋 All Products</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Price</th><th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of allProducts">
+          <td>{{ p.productId }}</td>
+          <td>{{ p.productName }}</td>
+          <td>₹{{ p.productPrice }}</td>
+          <td>{{ p.stockQuantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="product-wrapper">
+
+
+  <!-- Two-column Layout for Add & Fetch -->
+<div class="product-row">
+  <!-- Add Product Card -->
+  <div class="card">
+    <form (ngSubmit)="addProduct()" #productForm="ngForm">
+      <h3>➕ Add Product</h3>
+
+      <label>Product Name:</label>
+      <input type="text" name="productName" [(ngModel)]="newProduct.productName" required minlength="2" maxlength="100">
+
+      <label>Description:</label>
+      <input type="text" name="productDescription" [(ngModel)]="newProduct.productDescription" required minlength="10" maxlength="255">
+
+      <label>Price (₹):</label>
+      <input type="number" name="productPrice" [(ngModel)]="newProduct.productPrice" required min="0.01" step="0.01">
+
+      <label>Stock Quantity:</label>
+      <input type="number" name="stockQuantity" [(ngModel)]="newProduct.stockQuantity" required min="0">
+
+      <label>Expiry Date:</label>
+      <input type="date" name="expiryDate" [(ngModel)]="newProduct.expiryDate" required>
+
+      <label>Manufacture Date:</label>
+      <input type="date" name="manufactureDate" [(ngModel)]="newProduct.manufactureDate" required>
+
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+
+  <!-- Fetch Product Card -->
+  <div class="card">
+  <h3>🔍 Fetch Product</h3>
+  <input [(ngModel)]="fetchId" placeholder="Enter product ID">
+  <button (click)="getProductById()">Fetch</button>
+
+  <div *ngIf="fetchedProduct" class="fetched-details">
+    <p><strong>ID:</strong> {{ fetchedProduct.productId }}</p>
+
+    <label>
+      Name:
+      <input [(ngModel)]="fetchedProduct.productName" [readonly]="!isEditMode">
+    </label>
+
+    <label>
+      Description:
+      <input [(ngModel)]="fetchedProduct.productDescription" [readonly]="!isEditMode">
+    </label>
+
+    <label>
+      Price:
+      <input type="number" [(ngModel)]="fetchedProduct.productPrice" [readonly]="!isEditMode">
+    </label>
+
+    <label>
+      Stock:
+      <input type="number" [(ngModel)]="fetchedProduct.stockQuantity" [readonly]="!isEditMode">
+    </label>
+
+    <label>
+      Expiry:
+      <input type="date" [(ngModel)]="fetchedProduct.expiryDate" [readonly]="!isEditMode">
+    </label>
+
+    <label>
+      Manufacture:
+      <input type="date" [(ngModel)]="fetchedProduct.manufactureDate" [readonly]="!isEditMode">
+    </label>
+
+    <div class="action-buttons">
+      <button *ngIf="!isEditMode" (click)="enableEdit()">✏️ Edit</button>
+      <button *ngIf="isEditMode" (click)="updateProduct()">💾 Save</button>
+      <button *ngIf="isEditMode" (click)="cancelEdit()">❌ Cancel</button>
+      <button class="delete-btn" (click)="deleteProduct()">🗑️ Delete</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</div>

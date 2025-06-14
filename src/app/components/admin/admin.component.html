@@ -1,0 +1,17 @@
+<div class="dashboard-container">
+    <div class="user-menu-wrapper">
+  <div class="user-icon" (click)="toggleDropdown()">
+    👤
+  </div>
+  <div class="user-dropdown" *ngIf="showDropdown">
+    <p class="user-name">Welcome, Admin</p>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</div>
+  <h2 class="dashboard-title">Admin Dashboard</h2>
+  <div class="dashboard-grid">
+    <a routerLink="/products" class="dashboard-card">Manage Products</a>
+    <a routerLink="/deliveries" class="dashboard-card">Manage Deliveries</a>
+    <a routerLink="/payments" class="dashboard-card">View Payments</a>
+  </div>
+</div>
